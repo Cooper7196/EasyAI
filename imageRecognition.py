@@ -1,4 +1,3 @@
-import matplotlib.pylab as plt
 import tensorflow as tf
 import tensorflow_hub as hub
 from tensorflow.keras import layers
@@ -11,8 +10,6 @@ def train(trainingDirectory, imageSize=(224, 224), epochs=1):
     image_generator = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1 / 255)
     image_data = image_generator.flow_from_directory(trainingDirectory,
                                                      target_size=imageSize)
-
-    # "C:\\Users\\cbros\\Downloads\\dataset\\training_set"
 
     for image_batch, label_batch in image_data:
         break
@@ -46,26 +43,6 @@ def train(trainingDirectory, imageSize=(224, 224), epochs=1):
     return (model, class_names, imageSize)
 
 
-# predicted_batch = model.predict(image_batch)
-# predicted_id = np.argmax(predicted_batch, axis=-1)
-# predicted_label_batch = class_names[predicted_id]
-#
-# label_id = np.argmax(label_batch, axis=-1)
-#
-# plt.figure(figsize=(10, 9))
-# plt.subplots_adjust(hspace=0.5)
-# for n in range(30):
-#     plt.subplot(6, 5, n + 1)
-#     plt.imshow(image_batch[n])
-#     color = "green" if predicted_id[n] == label_id[n] else "red"
-#     plt.title(predicted_label_batch[n].title(), color=color)
-#     plt.axis('off')
-# _ = plt.suptitle("Model predictions (green: correct, red: incorrect)")
-# plt.show()
-#
-#
-# model.save("", save_format='tf')
-
 def save(model, path):
     model[0].save(path, save_format='tf')
     classes = open(path + "\\classes", "wb")
@@ -90,14 +67,13 @@ def classify(modelData, imagePath):
     class_names = modelData[1]
 
     predicted_batch = model.predict(x)
+
     predicted_id = np.argmax(predicted_batch, axis=-1)
     predicted_label_batch = class_names[predicted_id]
-
     return predicted_label_batch[0]
-
 
 # model = train("C:\\Users\\cbros\\Downloads\\dataset\\training_set")
 # model = train("C:\\Users\\cbros\\Downloads\\seg_train")
 # save(model, "test")
-model = load("catsVsDogs")
-print(classify(model, "C:\\Users\\cbros\\Downloads\\samoyed_puppy_dog_pictures.jpg"))
+# model = load("catsVsDogs")
+# print(classify(model, "C:\\Users\\cbros\\Downloads\\samoyed_puppy_dog_pictures.jpg"))
